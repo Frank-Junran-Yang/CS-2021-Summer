@@ -1,0 +1,21 @@
+{% extends 'base.jinja' %}
+
+{% block title %}Register Page{% endblock %}
+
+{% block body %}  
+
+    <form method = "post">
+        <center><h1>Your Money: {{money}}</h1></center>
+        <p>Deposit Money</p>
+        <input type = "text" name = "deposit" id = "deposit" placeholder = "deposit">
+        <input type = "submit"  name="depositbutton" value = "deposit">
+
+        </br></br>
+        <p>Withdraw Money</p>
+        <input type = "text" name = "withdraw" id = "withdraw" placeholder = "withdraw">
+        <input type = "submit"  name="withdrawbutton" value = "withdraw">
+    </form>
+
+
+
+{% endblock %}

@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <title> Add pet </title>
+    </head>
+
+    <body>
+        <ul>
+            {% for pet in pets %}
+                <a href = "{{url_for('pet', id = pet.id)}}"><li style = "color: {{pet.color}}"> {{pet.species}}: {{pet.name}}</a>
+            {% endfor %}
+        </ul>
+
+
+    </body>
+
+</html>

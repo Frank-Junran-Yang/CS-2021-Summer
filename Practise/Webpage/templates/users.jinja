@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>User Page</title>
+    </head>
+
+    <body>
+        <table>
+            <thead>
+
+                <tr>
+                    
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td>Email</td>
+                    <td>Password</td>
+
+                </tr>
+
+                
+            </thead>
+
+            <tbody>
+
+                {% for user in information %}
+                    <tr>            
+                        <td>{{user.fname}}</td>
+                        <td>{{user.lname}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.password}}</td>
+                    </tr>
+                {% endfor %}
+                
+
+    
+
+
+            </tbody>
+        </table>
+    </body>
+</html>

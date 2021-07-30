@@ -1,0 +1,38 @@
+{% extends 'base.jinja' %}
+
+{% block title %}Register Page{% endblock %}
+
+{% block body %}
+
+
+
+
+
+
+
+    
+    <ul>
+        {% for private in privates %}
+            <p> {{private.name}} {{private.rank}} {{private.tuitionfee}}</p>
+        {% endfor %}
+
+        {{number}}
+        {% for school in privateschools %}
+            <div class="card text-center">
+  <div class="card-header">
+    Number {{school[1]}}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{school[0]}}</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <a href="{{url_for('privateschool',schoolname=school[0])}}" class="btn btn-primary">Go somewhere</a>
+  </div>
+  <div class="card-footer text-muted">
+    It's a good school
+  </div>
+</div>
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}

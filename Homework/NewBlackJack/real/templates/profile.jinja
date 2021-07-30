@@ -1,0 +1,38 @@
+{% extends 'base.jinja' %}
+
+{% block title %}My Page{% endblock %}
+
+{% block body %}
+{# <img src = "{{url_for('static', filename = 'img/logo.jpg')}}"> #}
+<div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">All Users</h5>
+                <p class="card-text">View All Users Here.</p>
+                <a href="{{url_for('users')}}" class="btn btn-primary">Go</a>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Money</h5>
+                <p class="card-text">View Your Money Here.</p>
+                <a href="{{url_for('money')}}" class="btn btn-primary">Go</a>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">BlackJack</h5>
+                <p class="card-text">Play BlackJack Here.</p>
+                <a href="{{url_for('start')}}" class="btn btn-primary">Go</a>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

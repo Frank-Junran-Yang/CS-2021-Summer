@@ -1,0 +1,31 @@
+{% extends 'base.jinja' %}
+
+{% block title %}Blackjack{% endblock %}
+
+{% block body %}
+    <h1>Welcome to the game</h1>
+    <h2>Your Money {{user.money}}</h2>
+    <h3>Your Sum: {{session.get('card')[1]}}</h3> 
+    {# <h3>{{sumcard}}</h3> #}
+    <h3>{{result}}     {{stop}}</h3>
+    
+    {# <form class="row g-3" method = "post">
+        <div class="col-auto">
+            <label for="choice" class="visually-hidden">CHOICE</label>
+            <input type="text" class="form-control" name = "choice" id="choice" value="choice">
+        </div>
+    </form> #}
+    <form method = "post">
+        <button class="btn btn-outline-secondary" type="submit" id="new" name="new" value="new">New Card</button>
+        <button class="btn btn-outline-secondary" type="submit" id="stop" name="stop" value="stop">Stop</button>
+        <button class="btn btn-outline-secondary" type="submit" id="restart" name="restart" value="restart">Restart</button>
+    </form>
+
+
+        {% for car in session.get('card')[0] %}
+        <div class="alert alert-info" role="alert">
+            {{car}}
+        </div>
+
+    {% endfor %}
+{% endblock %}

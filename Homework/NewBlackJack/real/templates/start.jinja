@@ -1,0 +1,15 @@
+{% extends 'base.jinja' %}
+{% block title %}Blackjack{% endblock %}
+{% block body %}
+    <h1>Welcome to the game</h1>
+    
+    {# <form class="row g-3" method = "post">
+        <div class="col-auto">
+            <label for="choice" class="visually-hidden">CHOICE</label>
+            <input type="text" class="form-control" name = "choice" id="choice" value="choice">
+        </div>
+    </form> #}
+    <form method = "post">
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Start</button>
+    </form>
+{% endblock %}

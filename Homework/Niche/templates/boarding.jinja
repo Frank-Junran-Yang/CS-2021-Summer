@@ -1,0 +1,29 @@
+{% extends 'base.jinja' %}
+
+{% block title %}Register Page{% endblock %}
+
+{% block body %}
+    <ul>
+        {% for boarding in boardings %}
+            <p> {{boarding.name}} {{boarding.location}} {{boarding.tuitionfee}}</p>
+        {% endfor %}
+    </ul>
+
+    {% for school in boardingschools %}
+            <div class="card text-center">
+  <div class="card-header">
+    Number {{school[1]}}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{school[0]}}</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <a href="{{url_for('boardingschool',schoolname=school[0])}}" class="btn btn-primary">Go somewhere</a>
+  </div>
+  <div class="card-footer text-muted">
+    It's a good school
+  </div>
+</div>
+        {% endfor %}
+
+
+{% endblock %}

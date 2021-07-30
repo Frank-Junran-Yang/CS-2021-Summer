@@ -1,0 +1,25 @@
+{% extends 'base.jinja' %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block body %}
+
+    <center><img src="{{url_for('static', filename = '{}.jpg'.format(name))}}"  height = 350 width = 700 ></center>
+
+<h1><center>{{name}}</center></h1>
+<h2><center>Location: {{location}}</center></h2>
+<h2><center>Tuition Fee: {{tuitionfee}}</center></h2>
+<h2><center>Students: {{size}}</center></h2>
+<h2><center>Matriculation: {{matriculation}}</center></h2>
+<h2><center>Rank: {{rank}}</center></h2>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
