@@ -6,10 +6,6 @@
 
 
 
-
-
-
-
     
     <ul>
         {% for private in privates %}
@@ -17,22 +13,27 @@
         {% endfor %}
 
         {{number}}
-        {% for school in privateschools %}
-            <div class="card text-center">
-  <div class="card-header">
-    Number {{school[1]}}
-  </div>
-  <div class="card-body">
-    <h5 class="card-title">{{school[0]}}</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a href="{{url_for('privateschool',schoolname=school[0])}}" class="btn btn-primary">Go somewhere</a>
-  </div>
-  <div class="card-footer text-muted">
-    It's a good school
-  </div>
-</div>
-        {% endfor %}
+
+
+        
     </ul>
 
+
+<div class="row">
+    {% for school in privateschools %}
+        <div class="col-sm-4">
+            <div class="card">
+            <img src="{{url_for('static', filename = '{}.jpg'.format(school[0]))}}" class="card-img-top" alt="..." object-fit= cover; width="300" height="300">
+            <div class="card-body">
+                <h5 class="card-title">{{school[0]}}</h5>
+                <h6 class="card-text">Rank {{school[1]}}</h6>
+                <a href="{{url_for('privateschool',schoolname=school[0])}}" class="btn btn-primary">Go somewhere</a>
+            </div>
+            </div>
+        </div>
+    {% endfor %}
+    
+
+</div>
 
 {% endblock %}

@@ -11,12 +11,18 @@
 <h2><center>Tuition Fee: {{tuitionfee}}</center></h2>
 <h2><center>Students: {{size}}</center></h2>
 <h2><center>Matriculation: {{matriculation}}</center></h2>
-<h2><center>Rank: {{rank}}</center></h2>
+{# <h2><center>Rank: {{rank}}</center></h2> #}
 
+{% for rank in allrank %}
+    <h2><center>{{rank[0]}}: {{rank[1]}}</center></h2>
+{% endfor %}
 
+<form method = "post">
+        <center><input class="btn btn-outline-secondary" type="submit" id="add" name="add"></center>
+        <h5 style="color:red"><center>{{already}}</center></h5>
+</form>
 
-
-
+{{boardingrank}}
 
 
 

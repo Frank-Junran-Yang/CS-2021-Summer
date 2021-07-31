@@ -17,7 +17,7 @@ class User(db.Model):
     firstname=db.Column(db.String(80), nullable=True)
     lastname=db.Column(db.String(80), nullable=True)
     money=db.Column(db.Integer, nullable=True)
-    favorite=db.Column(db.String(1000))
+    favorite=db.Column(db.String(1000),unique=True)
 
 class PrivateSchools(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=True)
@@ -54,8 +54,66 @@ def index():
     boardings= BoardingSchools.query.all()
     return render_template('index.jinja',privates=privates,publics=publics,boardings=boardings)
 
+def digit(p):
+    digits='1234567890'
+    for digit in digits:
+        for i in p:
+            if i==digit:
+                return True
+    return False
+
+def char(p):
+    chars='abcdefghijklmnopqrstuvwxyz'
+    for char in chars:
+        for i in p:
+            if i==char:
+                return True
+    return False
+
+def capital(p):
+    capitals='ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    for capital in capitals:
+        for i in p:
+            if i==capital:
+                return True
+    return False
+
+
+def onetype(name):
+    publics=PublicSchools.query.all()
+    boardings=BoardingSchools.query.all()
+    privates=PrivateSchools.query.all()
+    for public in publics:
+        if name==public.name:
+            return 'publicschool'
+    for boarding in boardings:
+        if name==boarding.name:
+            return 'boardingschool'
+    for private in privates:
+        if name==private.name:
+            return 'privateschool'
+
+
+def alltype(name):
+    publics=PublicSchools.query.all()
+    boardings=BoardingSchools.query.all()
+    privates=PrivateSchools.query.all()
+    type=[]
+    for public in publics:
+        if name==public.name:
+            type.append('publicschool')
+    for boarding in boardings:
+        if name==boarding.name:
+            type.append('boardingschool')
+    for private in privates:
+        if name==private.name:
+            type.append('privateschool')
+    return type
+
+
 @app.route('/register',methods=['POST','GET'])
 def register():
+    warning=''
     try:
         if (request.method == 'POST'):
             username=request.form.get('username')
@@ -63,11 +121,30 @@ def register():
             check=request.form.get('check')
             firstname=request.form.get('firstname')
             lastname=request.form.get('lastname')
-            
             if password!=check:
-                return redirect(url_for('register'))
+                warning='Password Does Not Match!!!'
+                return render_template('register.jinja',warning=warning)
+
             
             if password==check:
+                if len(password)<=6:
+                    warning='Your password is too short, please make it longer than 6 characters'
+                    return render_template('register.jinja',warning=warning)
+                elif len(password)>=20:
+                    warning='Your password is too long, please make it no longer than 20 characters'
+                    return render_template('register.jinja',warning=warning)
+                elif not capital(password):
+                    print('no capital')
+                    warning='You need to have at least one digit, one capital letter, and one letter'
+                    return render_template('register.jinja',warning=warning)
+                elif not digit(password):
+                    print('no digit')
+                    warning='You need to have at least one digit, one capital letter, and one letter'
+                    return render_template('register.jinja',warning=warning)
+                elif not char(password):
+                    print('no letter')
+                    warning='You need to have at least one digit, one capital letter, and one letter'
+                    return render_template('register.jinja',warning=warning)
                 user=User(username=username, password=password, firstname=firstname, lastname=lastname, money=1000)
                 db.session.add(user)
                 db.session.commit()
@@ -75,7 +152,7 @@ def register():
                 return redirect(url_for('users'))
     except:
         return redirect(url_for('register'))
-    return render_template('register.jinja')
+    return render_template('register.jinja',warning=warning)
 
 @app.route('/registerprivate',methods=['POST','GET'])
 def registerprivate():
@@ -146,7 +223,7 @@ def users():
     users= User.query.all()
     return render_template('users.jinja', users=users)
 
-@app.route('/private/<schoolname>')
+@app.route('/private/<schoolname>',methods=['POST','GET'])
 def privateschool(schoolname):
     school=PrivateSchools.query.filter_by(name=schoolname ).first()
     name=school.name
@@ -155,6 +232,61 @@ def privateschool(schoolname):
     rank=school.rank
     size=school.size
     matriculation=school.matriculation
+    already=''
+    allrank=[]
+    type=alltype(name)
+    if len(type)>1:
+        boardings=BoardingSchools.query.all()
+        publics=PublicSchools.query.all()
+
+        for boarding in boardings:
+            if name==boarding.name:
+                allrank.append(['Boarding Rank',boarding.rank])
+        
+        for public in publics:
+            if name==public.name:
+                allrank.append(['Public Rank',public.rank])
+        
+        allrank.append(['Private Rank',rank])
+    else:
+        allrank.append(['Private Rank',rank])
+    if (request.method=='POST'):
+        if request.form.get('add'):
+            print('works')
+            username=session.get('user')[0]
+            user=User.query.filter_by(username=username ).first()
+            # print(type(user.favorite))
+            # print(str(user.favorite))
+            # user.favorite=None
+            if str(user.favorite)=='None':
+                user.favorite=name
+                user.favorite+=','
+                # print('The First Round')
+            else:
+                hello=str(user.favorite).split(',')
+                for thing in hello:
+                    if name == thing:
+                        # print(str(user.favorite))
+                        already='This school is already in your favorite!'
+                        return render_template('school.jinja',name=name,location=location,tuitionfee=tuitionfee,rank=rank,matriculation=matriculation,size=size, already=already, allrank=allrank)
+
+                user.favorite=str(user.favorite)+name
+                user.favorite+=','
+                # print('The Normal Round')
+            
+            # print(str(user.favorite))
+            db.session.commit()
+
+    # try:
+    #     boarding=BoardingSchools.query.filter_by(name=name).first()
+    #     boardingrank=boarding.rank
+    #     print(boardingrank)
+    #     return render_template('school.jinja',name=name,location=location,tuitionfee=tuitionfee,rank=rank,matriculation=matriculation,size=size,boardingrank=boardingrank)
+    # except:
+    #     print('Failed')
+    #     return render_template('school.jinja',name=name,location=location,tuitionfee=tuitionfee,rank=rank,matriculation=matriculation,size=size)
+
+
     # publicr=0
     # boardingr=0
     # publics=PublicSchools.query.all()
@@ -181,9 +313,9 @@ def privateschool(schoolname):
     
 
 
-    return render_template('school.jinja',name=name,location=location,tuitionfee=tuitionfee,rank=rank,matriculation=matriculation,size=size)
+    return render_template('school.jinja',name=name,location=location,tuitionfee=tuitionfee,rank=rank,matriculation=matriculation,size=size, already=already, allrank=allrank)
 
-@app.route('/public/<schoolname>')
+@app.route('/public/<schoolname>',methods=['POST','GET'])
 def publicschool(schoolname):
     school=PublicSchools.query.filter_by(name=schoolname ).first()
     name=school.name
@@ -192,9 +324,55 @@ def publicschool(schoolname):
     rank=school.rank
     size=school.size
     matriculation=school.matriculation
-    return render_template('school.jinja',name=name,location=location,tuitionfee=tuitionfee,rank=rank,matriculation=matriculation,size=size)
+    already=''
+    allrank=[]
+    type=alltype(name)
+    if len(type)>1:
+        boardings=BoardingSchools.query.all()
+        privates=PrivateSchools.query.all()
 
-@app.route('/boarding/<schoolname>')
+        for boarding in boardings:
+            if name==boarding.name:
+                allrank.append(['Boarding Rank',boarding.rank])
+        
+        for private in privates:
+            if name==private.name:
+                allrank.append(['Private Rank',private.rank])
+        
+        allrank.append(['Public Rank',rank])
+    else:
+        allrank.append(['Public Rank',rank])
+
+    if (request.method=='POST'):
+        if request.form.get('add'):
+            print('works')
+            username=session.get('user')[0]
+            user=User.query.filter_by(username=username ).first()
+            # print(type(user.favorite))
+            # print(str(user.favorite))
+            # user.favorite=None
+            if str(user.favorite)=='None':
+                user.favorite=name
+                user.favorite+=','
+                # print('The First Round')
+            else:
+                hello=str(user.favorite).split(',')
+                for thing in hello:
+                    if name == thing:
+                        # print(str(user.favorite))
+                        already='This school is already in your favorite!'
+                        return render_template('school.jinja',name=name,location=location,tuitionfee=tuitionfee,rank=rank,matriculation=matriculation,size=size, already=already, allrank=allrank)
+
+                user.favorite=str(user.favorite)+name
+                user.favorite+=','
+                # print('The Normal Round')
+            
+            # print(str(user.favorite))
+            db.session.commit()
+
+    return render_template('school.jinja',name=name,location=location,tuitionfee=tuitionfee,rank=rank,matriculation=matriculation,size=size, already=already, allrank=allrank)
+
+@app.route('/boarding/<schoolname>',methods=['POST','GET'])
 def boardingschool(schoolname):
     school=BoardingSchools.query.filter_by(name=schoolname ).first()
     name=school.name
@@ -203,7 +381,51 @@ def boardingschool(schoolname):
     rank=school.rank
     size=school.size
     matriculation=school.matriculation
-    return render_template('school.jinja',name=name,location=location,tuitionfee=tuitionfee,rank=rank,matriculation=matriculation,size=size)
+    already=''
+    allrank=[]
+    type=alltype(name)
+    if len(type)>1:
+        privates=PrivateSchools.query.all()
+        publics=PublicSchools.query.all()
+
+        for private in privates:
+            if name==private.name:
+                allrank.append(['Private Rank',private.rank])
+        
+        for public in publics:
+            if name==public.name:
+                allrank.append(['Public Rank',public.rank])
+        
+        allrank.append(['Boarding Rank',rank])
+    else:
+        allrank.append(['Boarding Rank',rank])
+    if (request.method=='POST'):
+        if request.form.get('add'):
+            print('works')
+            username=session.get('user')[0]
+            user=User.query.filter_by(username=username ).first()
+            # print(type(user.favorite))
+            # print(str(user.favorite))
+            # user.favorite=None
+            if str(user.favorite)=='None':
+                user.favorite=name
+                user.favorite+=','
+                # print('The First Round')
+            else:
+                hello=str(user.favorite).split(',')
+                for thing in hello:
+                    if name == thing:
+                        # print(str(user.favorite))
+                        already='This school is already in your favorite!'
+                        return render_template('school.jinja',name=name,location=location,tuitionfee=tuitionfee,rank=rank,matriculation=matriculation,size=size, already=already, allrank=allrank)
+
+                user.favorite=str(user.favorite)+name
+                user.favorite+=','
+                # print('The Normal Round')
+            
+            # print(str(user.favorite))
+            db.session.commit()
+    return render_template('school.jinja',name=name,location=location,tuitionfee=tuitionfee,rank=rank,matriculation=matriculation,size=size, already=already, allrank=allrank)
 
 
 @app.route('/private')
@@ -280,14 +502,28 @@ def login():
     return render_template('login.jinja')
             
 
+
+
+
+
 @app.route('/profile',methods=['POST','GET'])
 
 def profile():
     if (not session.get('user')):
         return redirect(url_for('index'))
     
-    user=session.get('user')[0]
-    return render_template('profile.jinja')
+    name=session.get('user')[0]
+    user=User.query.filter_by(username=name ).first()
+    favorite=str(user.favorite)
+    hello=favorite.split(',')[:-1]
+    schools=[]
+    for thing in hello:
+        schools.append([thing,onetype(thing)])
+
+    print(hello)
+    print(schools)
+    
+    return render_template('profile.jinja',favorite=favorite,hello=hello,schools=schools)
 
 
 @app.route('/money',methods=['POST','GET'])

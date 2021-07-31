@@ -12,7 +12,9 @@
             <div class="carousel-inner">
             <div class="carousel-item active">
                 <div class="card">
-                    <img src="{{url_for('static', filename = 'Private School.jpg')}}" class="card-img-top" alt="...">
+                    <div class="embed-responsive embed-responsive-16by9">
+                    <img src="{{url_for('static', filename = 'Private School.jpg')}}" class="card-img-top" alt="..." object-fit= cover width="500" height="300">
+                    </div>
                     <div class="card-body">
                     <h5 class="card-title">Private Schools</h5>
                     <p class="card-text">See All Private Schools</p>
@@ -23,7 +25,9 @@
             {% for private in privates %}
             <div class="carousel-item">
                 <div class="card">
-                    <img src="{{url_for('static', filename = '{}.jpg'.format(private.name))}}" class="card-img-top" alt="...">
+                    <div class="embed-responsive embed-responsive-16by9">
+                    <img src="{{url_for('static', filename = '{}.jpg'.format(private.name))}}" class="card-img-top" alt="..." object-fit= cover; width="500" height="300">
+                    </div>
                     <div class="card-body">
                     <h5 class="card-title">{{private.name}}</h5>
                     <p class="card-text">{{private.location}}</p>
@@ -47,8 +51,10 @@
         <div id="publicschools" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
             <div class="carousel-item active">
-                <div class="card">
-                    <img src="{{url_for('static', filename = 'Public School.jpeg')}}" class="card-img-top" alt="...">
+                <div class="card" >
+                    <div class="embed-responsive embed-responsive-16by9">
+                    <img src="{{url_for('static', filename = 'Public School.jpeg')}}" class="card-img-top" alt="..." object-fit=cover; width="500" height="300">
+                    </div>
                     <div class="card-body">
                     <h5 class="card-title">Public Schools</h5>
                     <p class="card-text">See All Public Schools</p>
@@ -59,7 +65,9 @@
             {% for public in publics %}
             <div class="carousel-item">
                 <div class="card">
-                    <img src="{{url_for('static', filename = '{}.jpg'.format(public.name))}}" class="card-img-top" alt="...">
+                    <div class="embed-responsive embed-responsive-16by9">
+                    <img src="{{url_for('static', filename = '{}.jpg'.format(public.name))}}" class="card-img-top" alt="..." object-fit= cover; width="500" height="300">
+                    </div>
                     <div class="card-body">
                     <h5 class="card-title">{{public.name}}</h5>
                     <p class="card-text">{{public.location}}</p>
@@ -84,7 +92,9 @@
             <div class="carousel-inner">
             <div class="carousel-item active">
                 <div class="card">
-                    <img src="{{url_for('static', filename = 'Boarding School.jpg')}}" class="card-img-top" alt="...">
+                    <div class="embed-responsive embed-responsive-16by9">
+                    <img src="{{url_for('static', filename = 'Boarding School.jpg')}}" class="card-img-top" alt="..." object-fit= cover; width="500" height="300">
+                    </div>
                     <div class="card-body">
                     <h5 class="card-title">Boarding Schools</h5>
                     <p class="card-text">See All Boarding Schools</p>
@@ -95,7 +105,9 @@
             {% for boarding in boardings %}
             <div class="carousel-item">
                 <div class="card">
-                    <img src="{{url_for('static', filename = '{}.jpg'.format(boarding.name))}}" class="card-img-top" alt="...">
+                    <div class="embed-responsive embed-responsive-16by9">
+                    <img src="{{url_for('static', filename = '{}.jpg'.format(boarding.name))}}" class="card-img-top" alt="..." object-fit= cover; width="500" height="300">
+                    </div>
                     <div class="card-body">
                     <h5 class="card-title">{{boarding.name}}</h5>
                     <p class="card-text">{{boarding.location}}</p>
