@@ -6,13 +6,14 @@
 
     <form method = "post">
         <input type = "text" name = "username" id = "username" placeholder = "username">
-        <input type = "text" name = "password" id = "password" placeholder = "password">
-        <input type = "text" name = "check" id = "check" placeholder = "check">
+        <input type = "password" name = "password" id = "password" placeholder = "password">
+        <input type = "password" name = "check" id = "check" placeholder = "check">
         <input type = "text" name = "firstname" id = "firstname" placeholder = "firstname">
         <input type = "text" name = "lastname" id = "lastname" placeholder = "lastname">
         <input type = "submit" value = "Send">
     </form>
     <p style="color:red">{{warning}}</p>
+    <p style="color:blue">{{success}}</p>
 
 
 {% endblock %}

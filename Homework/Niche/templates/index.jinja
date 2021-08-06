@@ -17,8 +17,8 @@
                     </div>
                     <div class="card-body">
                     <h5 class="card-title">Private Schools</h5>
-                    <p class="card-text">See All Private Schools</p>
-                    <a href="private" class="btn btn-primary">Go somewhere</a>
+                    <p class="card-text">We Have {{prilen}} Private Schools</p>
+                    <a href="private" class="btn btn-primary">See All Private Schools</a>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                     <div class="card-body">
                     <h5 class="card-title">{{private.name}}</h5>
                     <p class="card-text">{{private.location}}</p>
-                    <a href="{{url_for('privateschool',schoolname=private.name)}}" class="btn btn-primary">Go somewhere</a>
+                    <a href="{{url_for('privateschool',schoolname=private.name)}}" class="btn btn-primary">See The School</a>
                     </div>
                 </div>
             </div>
@@ -57,8 +57,8 @@
                     </div>
                     <div class="card-body">
                     <h5 class="card-title">Public Schools</h5>
-                    <p class="card-text">See All Public Schools</p>
-                    <a href="public" class="btn btn-primary">Go somewhere</a>
+                    <p class="card-text">We Have {{publen}} Public Schools</p>
+                    <a href="public" class="btn btn-primary">See All Public Schools</a>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                     <div class="card-body">
                     <h5 class="card-title">{{public.name}}</h5>
                     <p class="card-text">{{public.location}}</p>
-                    <a href="{{url_for('publicschool',schoolname=public.name)}}" class="btn btn-primary">Go somewhere</a>
+                    <a href="{{url_for('publicschool',schoolname=public.name)}}" class="btn btn-primary">See The School</a>
                     </div>
                 </div>
             </div>
@@ -97,8 +97,8 @@
                     </div>
                     <div class="card-body">
                     <h5 class="card-title">Boarding Schools</h5>
-                    <p class="card-text">See All Boarding Schools</p>
-                    <a href="boarding" class="btn btn-primary">Go somewhere</a>
+                    <p class="card-text">We Have {{boalen}} Boarding Schools</p>
+                    <a href="boarding" class="btn btn-primary">See All Boarding Schools</a>
                     </div>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                     <div class="card-body">
                     <h5 class="card-title">{{boarding.name}}</h5>
                     <p class="card-text">{{boarding.location}}</p>
-                    <a href="{{url_for('boardingschool',schoolname=boarding.name)}}" class="btn btn-primary">Go somewhere</a>
+                    <a href="{{url_for('boardingschool',schoolname=boarding.name)}}" class="btn btn-primary">See The School</a>
                     </div>
                 </div>
             </div>

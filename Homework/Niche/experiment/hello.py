@@ -35,8 +35,20 @@
 
 
  
+# def listToString(s): 
+#     str1 = "" 
+#     for ele in s: 
+#         str1 += ele  
+#         str1 += ','
 
+#     return str1 
 
 hello='Frank,Will,Wynn'
-n = hello.split(',')
-print(n)
+
+
+hi=['Frank','Will','Wynn']
+print(len(hi))
+print(hi)
+hi.remove('Frank')
+print(len(hi))
+print(hi)
