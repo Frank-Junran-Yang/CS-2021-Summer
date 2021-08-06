@@ -6,18 +6,6 @@
 
 
 
-    
-    <ul>
-        {% for private in privates %}
-            <p> {{private.name}} {{private.rank}} {{private.tuitionfee}}</p>
-        {% endfor %}
-
-        {{number}}
-
-
-        
-    </ul>
-
 
 <div class="row">
     {% for school in privateschools %}
@@ -27,7 +15,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{school[0]}}</h5>
                 <h6 class="card-text">Rank {{school[1]}}</h6>
-                <a href="{{url_for('privateschool',schoolname=school[0])}}" class="btn btn-primary">Go somewhere</a>
+                <a href="{{url_for('privateschool',schoolname=school[0])}}" class="btn btn-primary">See The School</a>
             </div>
             </div>
         </div>
