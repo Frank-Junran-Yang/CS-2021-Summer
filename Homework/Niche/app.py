@@ -1,8 +1,9 @@
-from os import readlink
+from os import readlink, stat
 from flask import Flask, render_template, request, redirect, url_for, session
 import csv
 import random
 from flask_sqlalchemy import SQLAlchemy
+from utils import listToString, capital, char, digit
 
 app = Flask(__name__)
 app.secret_key = 'dfghjiouhgyfvhbjaknsdasidnasiodn'
@@ -27,6 +28,12 @@ class PrivateSchools(db.Model):
     size=db.Column(db.String(80), nullable=True)
     matriculation=db.Column(db.String(100), nullable=True)
     rank = db.Column(db.Integer, nullable=True)
+    @staticmethod
+    def includes(name):
+        privates=PrivateSchools.query.filter_by(name = name).all()
+        if (privates):
+            return True
+        return False
 
 class PublicSchools(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=True)
@@ -36,6 +43,12 @@ class PublicSchools(db.Model):
     size=db.Column(db.String(80), nullable=True)
     matriculation=db.Column(db.String(100), nullable=True)
     rank = db.Column(db.Integer, nullable=True)
+    @staticmethod
+    def includes(name):
+        publics=PublicSchools.query.filter_by(name = name).all()
+        if (publics):
+            return True
+        return False
 
 class BoardingSchools(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=True)
@@ -46,74 +59,21 @@ class BoardingSchools(db.Model):
     matriculation=db.Column(db.String(100), nullable=True)
     rank = db.Column(db.Integer, nullable=True)
 
+    @staticmethod
+    def includes(name):
+        boardings=BoardingSchools.query.filter_by(name = name).all()
+        if (boardings):
+            print(boardings)
+            return True
+        return False
 
-def digit(p):
-    digits='1234567890'
-    for digit in digits:
-        for i in p:
-            if i==digit:
-                return True
-    return False
-
-def char(p):
-    chars='abcdefghijklmnopqrstuvwxyz'
-    for char in chars:
-        for i in p:
-            if i==char:
-                return True
-    return False
-
-def capital(p):
-    capitals='ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    for capital in capitals:
-        for i in p:
-            if i==capital:
-                return True
-    return False
-
-
-def onetype(name):
-    publics=PublicSchools.query.all()
-    boardings=BoardingSchools.query.all()
-    privates=PrivateSchools.query.all()
-    for public in publics:
-        if name==public.name:
-            return 'publicschool'
-    for boarding in boardings:
-        if name==boarding.name:
-            return 'boardingschool'
-    for private in privates:
-        if name==private.name:
-            return 'privateschool'
-
-
-def alltype(name):
-    publics=PublicSchools.query.all()
-    boardings=BoardingSchools.query.all()
-    privates=PrivateSchools.query.all()
-    type=[]
-    for public in publics:
-        if name==public.name:
-            type.append('publicschool')
-    for boarding in boardings:
-        if name==boarding.name:
-            type.append('boardingschool')
-    for private in privates:
-        if name==private.name:
-            type.append('privateschool')
-    return type
-
-def listToString(s): 
-    str1 = "" 
-    for ele in s: 
-        str1 += ele  
-        str1 += ','
-
-    return str1[0:-1]
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('404.jinja'), 404
 
 
 @app.route('/',methods=['POST','GET'])
-
 def index():
     privates= PrivateSchools.query.all()
     publics= PublicSchools.query.all()
@@ -249,7 +209,13 @@ def privateschool(schoolname):
     matriculation=school.matriculation
     already=''
     allrank=[]
-    type=alltype(name)
+    type=[]
+    if (BoardingSchools.includes(name)):
+        type.append('boardingschool')
+    if (PrivateSchools.includes(name)):
+        type.append('privateschool')
+    if (PublicSchools.includes(name)):
+        type.append('publicschool')
     if len(type)>1:
         boardings=BoardingSchools.query.all()
         publics=PublicSchools.query.all()
@@ -305,7 +271,13 @@ def publicschool(schoolname):
     matriculation=school.matriculation
     already=''
     allrank=[]
-    type=alltype(name)
+    type=[]
+    if (BoardingSchools.includes(name)):
+        type.append('boardingschool')
+    if (PrivateSchools.includes(name)):
+        type.append('privateschool')
+    if (PublicSchools.includes(name)):
+        type.append('publicschool')
     if len(type)>1:
         boardings=BoardingSchools.query.all()
         privates=PrivateSchools.query.all()
@@ -361,7 +333,13 @@ def boardingschool(schoolname):
     matriculation=school.matriculation
     already=False
     allrank=[]
-    type=alltype(name)
+    type=[]
+    if (BoardingSchools.includes(name)):
+        type.append('boardingschool')
+    if (PrivateSchools.includes(name)):
+        type.append('privateschool')
+    if (PublicSchools.includes(name)):
+        type.append('publicschool')
     if len(type)>1:
         privates=PrivateSchools.query.all()
         publics=PublicSchools.query.all()
@@ -407,52 +385,22 @@ def boardingschool(schoolname):
 
 @app.route('/private')
 def private():
-    privateschools=[]
-    number=[]
     privates= PrivateSchools.query.all()
-    for private in privates:
-        number.append(private.rank)
-    sorted(number)
+    privates_sorted = sorted(privates, key = lambda x: x.rank)
 
-    for number in sorted(number):
-        for private in privates:
-            if number==private.rank:
-                privateschools.append([private.name,private.rank])
-    
-
-
-    return render_template('private.jinja', privates=privates,privateschools=privateschools)
+    return render_template('private.jinja', privates=privates,privateschools=privates_sorted)
 
 @app.route('/public')
 def public():
-    publicschools=[]
-    number=[]
     publics= PublicSchools.query.all()
-    for public in publics:
-        number.append(public.rank)
-    sorted(number)
-
-    for number in sorted(number):
-        for public in publics:
-            if number==public.rank:
-                publicschools.append([public.name,public.rank])
-    return render_template('public.jinja', publics=publics,publicschools=publicschools)
+    public_sorted = sorted(publics, key = lambda x: x.rank)
+    return render_template('public.jinja', publics=publics,publicschools=public_sorted)
 
 @app.route('/boarding')
 def boarding():
-
-    boardingschools=[]
-    number=[]
     boardings= BoardingSchools.query.all()
-    for boarding in boardings:
-        number.append(boarding.rank)
-    sorted(number)
-
-    for number in sorted(number):
-        for boarding in boardings:
-            if number==boarding.rank:
-                boardingschools.append([boarding.name,boarding.rank])
-    return render_template('boarding.jinja', boardings=boardings,boardingschools=boardingschools)
+    boarding_sorted = sorted(boardings, key = lambda x: x.rank)
+    return render_template('boarding.jinja', boardings=boardings,boardingschools=boarding_sorted)
 
 
 @app.route('/login',methods=['POST','GET'])
@@ -478,6 +426,7 @@ def login():
 @app.route('/profile',methods=['POST','GET'])
 
 def profile():
+    no=''
     if (not session.get('user')):
         return redirect(url_for('index'))
     
@@ -485,11 +434,43 @@ def profile():
     user=User.query.filter_by(username=name ).first()
     favorite=str(user.favorite)
     hello=favorite.split(',')[:-1]
+    print('hello = {}'.format(hello))
     schools=[]
+    boardingschools=[]
+    publicschools=[]
+    privateschools=[]
+    if len(hello)==0:
+        no='You Do Not Have Any Favorite School Yet'
     for thing in hello:
-        schools.append([thing,onetype(thing)])
+        school_type = []
+        print(thing)
+        print('no school type yet')
+        if (BoardingSchools.includes(thing)):
+            print('is boarding')
+            school_type.append('boardingschool')
+        if (PublicSchools.includes(thing)):
+            print('is public')
+            school_type.append('publicschool')
+        if (PrivateSchools.includes(thing)):
+            print('is private')
+            school_type.append('privateschool')
+            
+        schools.append([thing,school_type])
     
-    return render_template('profile.jinja',favorite=favorite,hello=hello,schools=schools)
+    for school in schools:
+        for type in school[1]:
+            if type=='boardingschool':
+                boardingschools.append([school[0],type])
+            if type=='publicschool':
+                publicschools.append([school[0],type])
+            if type=='privateschool':
+                privateschools.append([school[0],type])
+
+    print(schools)
+    print(privateschools)
+    print(boardingschools)
+    print(publicschools)
+    return render_template('profile.jinja',favorite=favorite,hello=hello,schools=schools, no=no, privateschools=privateschools, boardingschools=boardingschools, publicschools=publicschools)
 
 
 @app.route('/money',methods=['POST','GET'])

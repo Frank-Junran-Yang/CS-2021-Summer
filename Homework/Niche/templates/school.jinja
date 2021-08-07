@@ -3,16 +3,16 @@
 {% block title %}{{name}}{% endblock %}
 
 {% block body %}
-
-    <center><img src="{{url_for('static', filename = '{}.jpg'.format(name))}}"  height = 350 width = 700 ></center>
+    </br></br></br></br>
+    <center><img src="{{url_for('static', filename = '{}.jpg'.format(name))}}"  height = 350 width = 700 ></center></br></br>
 
     {% if not session.get('user') %}
 
-        <h1><center>{{name}}</center></h1>
-        <h2><center>Location: {{location}}</center></h2>
-        <h2><center>Tuition Fee: {{tuitionfee}}</center></h2>
-        <h2><center>Students: {{size}}</center></h2>
-        <h2><center>Matriculation: {{matriculation}}</center></h2>
+        <h1><center>{{name}}</center></h1></br>
+        <h2><center>Location: {{location}}</center></h2></br>
+        <h2><center>Tuition Fee: {{tuitionfee}}</center></h2></br>
+        <h2><center>Students: {{size}}</center></h2></br>
+        <h2><center>Matriculation: {{matriculation}}</center></h2></br>
 
         {% for rank in allrank %}
             <h2><center>{{rank[0]}}: {{rank[1]}}</center></h2>
@@ -22,14 +22,14 @@
 
         {% if already%}
 
-        <h1><center>{{name}}</center></h1>
-        <h2><center>Location: {{location}}</center></h2>
-        <h2><center>Tuition Fee: {{tuitionfee}}</center></h2>
-        <h2><center>Students: {{size}}</center></h2>
-        <h2><center>Matriculation: {{matriculation}}</center></h2>
+        <h1><center>{{name}}</center></h1></br>
+        <h2><center>Location: {{location}}</center></h2></br>
+        <h2><center>Tuition Fee: {{tuitionfee}}</center></h2></br>
+        <h2><center>Students: {{size}}</center></h2></br>
+        <h2><center>Matriculation: {{matriculation}}</center></h2></br>
 
         {% for rank in allrank %}
-            <h2><center>{{rank[0]}}: {{rank[1]}}</center></h2>
+            <h2><center>{{rank[0]}}: {{rank[1]}}</center></h2></br>
         {% endfor %}
         <form method = "post">
          <center><input class="btn btn-outline-secondary" type="submit" id="remove" name="remove" value="remove"></center>
