@@ -1,0 +1,15 @@
+{% load static %}
+
+{{account.name}}
+{% if account.picture %}
+<img src = "{{account.picture.url}}" style = "height:20px">
+{% endif %}
+<br>
+Friends:
+<ul>
+    {% for friend in friends %}
+     <li><a href = "{% url 'acc' friend.id %}">{{friend.login}}</a></li>   
+    {% endfor %}
+</ul>
+
+<script src = "{% static 'account/scripts.js' %}">

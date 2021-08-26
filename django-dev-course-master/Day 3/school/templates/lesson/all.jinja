@@ -1,0 +1,7 @@
+{% for lesson in lessons %}
+    {{lesson.teacher.name}} (
+        {% for student in lesson.students.all %}
+            {{student.name}}
+        {% endfor %}
+    )
+{% endfor %}

@@ -1,0 +1,5 @@
+<ul>
+{% for acc in accounts %}
+    <li><a href = "{% url 'acc' acc.id %}"> {{acc.login}}</a></li>
+{% endfor %}
+</ul>

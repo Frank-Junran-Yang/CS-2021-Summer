@@ -1,0 +1,6 @@
+- Day 1 (Aug 16, 11:00-14:00, Online): Django MVT Structure
+- Day 2 (Aug 19, 13:00-16:00, Online): JavaScript
+- Day 3 (Aug 20, 10:00-13:00, In-Person): Todo Application
+- Day 4 (Aug 21, 10:00-13:00, In-Person): Static and Media Files
+- Day 5 (Aug 31, 18:00-20:00, In-Person): Team project Review
+- Day 6 (Sep 4, 10:00-20:00, In-Person): Code Review + Deployment
